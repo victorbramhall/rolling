@@ -1,54 +1,63 @@
-unsigned long keypad(int orientation) 
+void keypad(void) 
 {
-int i,j,x,sx,y,sy,n;
-int ex,ey,bsize,space;
+int i,j,sx,sy,ex,ey,bsize,space,toffset;
 
-  switch(orientation)
-  {
-    case 0:     // PORTRAIT
-      x=50;
-      y=dispy-130;
-      break;
-
-    case 1:    // LANDSCAPE
-      x=215;
-      y=215;
-      break;
-  }
-  sx=x;
-  sy=y;
+  myGLCD.setTextSize(1);
+  myGLCD.setTextColor(VLB_WHITE);
+  myGLCD.setFont(&FreeMono9pt7b);
   bsize=60;
   space=5;
-  ex=sx+bsize;
-  ey=sy+bsize;
-  n=1;
+  sy=180;
+  ex=ey=bsize;
+  toffset=20;
   for(i=0;i<2;i++)
   {
-    sx=x;
-    ex=sx+bsize;
-    for (j=0; j<4; j++,n++)
+    sx=150;
+    for(j=0;j<3;j++)
     {
-      GLCD7.setFont(bodb26);
-      GLCD7.setBackColor(button_color);
-      GLCD7.setColor(button_color);
-      GLCD7.fillRoundRect(sx,sy,ex,ey);
-      GLCD7.setColor(button_text_color);
-      GLCD7.drawRoundRect(sx,sy,ex,ey);
-      sprintf(buf,"%d",n);
-      if(n<10)
-        GLCD7.print(buf,sx+23,ey-45);
-      else
-        GLCD7.print(buf,sx+16,ey-45);
-      GLCD7.setFont(bell9);
-      GLCD7.print(menu[n-1],sx+3+(2*(8-strlen(menu[n-1]))),ey-15);
+      switch(i)
+      {
+        case 0:
+          switch(j)
+          {
+            case 0:
+              myGLCD.fillRoundRect(sx,sy,ex,ey,3,VLB_RED);
+              break;
+            case 1:
+              myGLCD.fillRoundRect(sx,sy,ex,ey,3,VLB_GREEN);
+              break;
+            case 2:
+              myGLCD.fillRoundRect(sx,sy,ex,ey,3,VLB_BLUE);
+              break;
+          }
+          myGLCD.setTextSize(2);
+          myGLCD.setCursor(sx+toffset,sy+bsize-toffset);
+          myGLCD.print("+");
+          myGLCD.setTextSize(1);
+          break;
+        case 1:
+          switch(j)
+          {
+            case 0:
+              myGLCD.fillRoundRect(sx,sy,ex,ey,3,VLB_RED);
+              break;
+            case 1:
+              myGLCD.fillRoundRect(sx,sy,ex,ey,3,VLB_GREEN);
+              break;
+            case 2:
+              myGLCD.fillRoundRect(sx,sy,ex,ey,3,VLB_BLUE);
+              break;
+          }
+          myGLCD.setTextSize(2);
+          myGLCD.setCursor(sx+toffset,sy+bsize-toffset);
+          myGLCD.print("-");
+          myGLCD.setTextSize(1);
+          break;
+      }
+      myGLCD.drawRoundRect(sx,sy,ex,ey,3,VLB_WHITE);
       sx+=(bsize+space);
-      ex=(sx+bsize);
     }
     sy+=(bsize+space);
-    ey=(sy+bsize);
   }
 }
-
-
-
 
